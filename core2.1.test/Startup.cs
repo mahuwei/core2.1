@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
+using log4net;
+using log4net.Config;
+using log4net.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +16,15 @@ namespace core2._1.test {
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
+
+            Repository = LogManager.CreateRepository("NETCoreRepository");
+            XmlConfigurator.Configure(Repository, new FileInfo("log4netConfig.xml"));
+            Log = LogManager.GetLogger(Repository.Name, typeof(Startup));
+            Log.Info("=============Log4net start===============");
         }
+
+        public static ILoggerRepository Repository { get; set; }
+        public static ILog Log { get; set; }
 
         public IConfiguration Configuration { get; }
 
@@ -22,10 +34,13 @@ namespace core2._1.test {
             services.AddResponseCompression(options => {
                 options.Providers.Add<BrotliCompressionProvider>();
                 // 现在设置了两种需求，以后开需要在添加
-                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] {"image/svg+xml","application/json"});
+                options.MimeTypes =
+                    ResponseCompressionDefaults.MimeTypes.Concat(new[]
+                        {"image/svg+xml", "application/json"});
             });
             // 添加后台运行程序
-            services.AddSingleton<IHostedService,BackgroundService>();
+            //services.AddSingleton<IHostedService, BackgroundService>();
+            services.AddSingleton<BackgroundService, HostService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
