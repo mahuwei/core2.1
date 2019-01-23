@@ -39,8 +39,9 @@ namespace core2._1.test {
                         {"image/svg+xml", "application/json"});
             });
             // 添加后台运行程序
-            //services.AddSingleton<IHostedService, BackgroundService>();
-            services.AddSingleton<BackgroundService, HostService>();
+            services.AddSingleton<IHostedService, BackgroundServiceTmp>();
+            //services.AddSingleton<BackgroundService, HostService>();
+            services.AddHostedService<HostService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

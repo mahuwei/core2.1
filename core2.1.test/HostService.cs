@@ -9,7 +9,7 @@ namespace core2._1.test {
         private static readonly ILog Log =
             LogManager.GetLogger(Startup.Repository.Name, typeof(HostService));
 
-        //private Timer _timer;
+        private Timer _timer;
 
         //public override void Dispose() {
         //    _timer?.Dispose();
@@ -17,7 +17,7 @@ namespace core2._1.test {
         //}
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
-            Log.Info("Service starting");
+            Log.Info("Service starting on HostService...");
 
             while (!stoppingToken.IsCancellationRequested) {
                 Log.Info(DateTime.Now.ToLongTimeString() +
@@ -25,7 +25,10 @@ namespace core2._1.test {
                 await Task.Delay(5000, stoppingToken);
             }
 
-            Log.Info("Service stopping");
+            Log.Info("Service stopping on HostService.");
+
+            //Log.Info(DateTime.Now.ToLongTimeString() +
+            //         ": Refresh Token!"); //在此写需要执行的任务
         }
 
         //public override Task StartAsync(CancellationToken cancellationToken) {

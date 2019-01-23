@@ -5,7 +5,7 @@ using log4net;
 using Microsoft.Extensions.Hosting;
 
 namespace core2._1.test {
-    public class BackgroundServiceDD : IHostedService, IDisposable {
+    public class BackgroundServiceTmp : IHostedService, IDisposable {
         private static readonly ILog Log =
             LogManager.GetLogger(Startup.Repository.Name, typeof(BackgroundService));
 
