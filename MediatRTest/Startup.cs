@@ -2,6 +2,7 @@
 using System.Reflection;
 using FluentValidation;
 using MediatR;
+using MediatR.Pipeline;
 using MediatRTest.PipelineBehaviors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,8 +22,13 @@ namespace MediatRTest {
         public void ConfigureServices(IServiceCollection services) {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            // 注册预处理通道处理逻辑不会用，先不管了
+            //services.AddTransient(typeof(RequestPreProcessorBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
+
+            // 通道运行顺序和和注册顺序一样
             // 注册运行时间检测通道
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
+            
             // 注册参数校验通道
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
